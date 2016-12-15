@@ -18,6 +18,7 @@
 		// Object containing all the registered plugins
 		plugins: {},
 		
+		ratio:1,
 		// Define the core class
 		core: function (options) {
 			this.isCore = true;
@@ -76,6 +77,7 @@
 			
 			// Get the canvas context and dimensions
 			this.canvas = this.canvasElement.getContext("2d");
+			oCanvas.ratio = this.getRatio(this.canvas);
 			var width = this.canvasElement.width;
 			var height = this.canvasElement.height;
 			Object.defineProperty(this, "width", {
@@ -104,7 +106,14 @@
 					return height;
 				}
 			});
-		
+			if(this.settings.HD)
+			{
+		        this.canvasElement.width = width * oCanvas.ratio;
+		        this.canvasElement.height = height * oCanvas.ratio;
+		        this.canvasElement.style.width = width + 'px';
+		        this.canvasElement.style.height = height + 'px';
+		        this.canvas.scale(oCanvas.ratio, oCanvas.ratio);
+			}
 			// Set the core instance in all modules to enable access of core properties inside of modules
 			for (var m in oCanvas.modules) {
 			
@@ -341,6 +350,21 @@
 			// plugin is still calling things on the core instance.
 			this.canvasElement = document.createElement("canvas");
 			this.canvas = this.canvasElement.getContext("2d");
+		},
+		getRatio:function(context)
+		{
+			var ratio = 1;
+			if(this.settings.HD)
+			{
+				devicePixelRatio = window.devicePixelRatio || 1,
+				 backingStoreRatio = context.webkitBackingStorePixelRatio ||
+                        context.mozBackingStorePixelRatio ||
+                        context.msBackingStorePixelRatio ||
+                        context.oBackingStorePixelRatio ||
+                        context.backingStorePixelRatio || 1,
+                        ratio = devicePixelRatio / backingStoreRatio;
+			}
+			return ratio;
 		}
 	};
 

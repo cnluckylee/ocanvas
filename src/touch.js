@@ -228,16 +228,19 @@
 			
 			onCanvas: function (e) {
 				e = e || (this.core.events.lastPointerEventObject && this.core.events.lastPointerEventObject.originalEvent);
-				
 				// Get pointer position
 				var pos = e ? this.getPos(e) : { x: this.x, y: this.y };
-				
+				var ratio = oCanvas.ratio;
 				// Check boundaries => (left) && (right) && (top) && (bottom)
-				if ( (pos.x >= 0) && (pos.x <= this.core.width) && (pos.y >= 0) && (pos.y <= this.core.height) ) {
+				if ( (pos.x <= this.core.width*ratio) && (pos.y >= 0) && (pos.y <= this.core.height*ratio) ) {
 					this.canvasHovered = true;
 					if (e) this.updatePos(e);
 					return true;
-				} else {
+				}else if((pos.x <= this.core.height*ratio) && (pos.y >= 0) && (pos.y <= this.core.width*ratio)){
+					this.canvasHovered = true;
+					if (e) this.updatePos(e);
+					return true;
+				 }else {
 					this.canvasHovered = false;
 					return false;
 				}
