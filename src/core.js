@@ -77,7 +77,7 @@
 			
 			// Get the canvas context and dimensions
 			this.canvas = this.canvasElement.getContext("2d");
-			oCanvas.ratio = this.getRatio(this.canvas);
+			ratio = oCanvas.ratio = this.getRatio(this.canvas);
 			var width = this.canvasElement.width;
 			var height = this.canvasElement.height;
 			Object.defineProperty(this, "width", {
